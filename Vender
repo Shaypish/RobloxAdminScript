@@ -22,6 +22,43 @@ local SpinOffButton = Instance.new("TextButton")
 local SkinLabel = Instance.new("TextLabel")
 local SkinTextBox = Instance.new("TextBox")
 local ChangeSkinButton = Instance.new("TextButton")
+local ShrinkButton = Instance.new("TextButton")
+ShrinkButton.Parent = SettingsFrame
+ShrinkButton.Text = "Shrink"
+ShrinkButton.Size = UDim2.new(1, 0, 0, 50)
+ShrinkButton.Position = UDim2.new(0, 0, 0, 430)
+ShrinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ShrinkButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+ShrinkButton.TextScaled = true
+
+-- Функция для уменьшения персонажа
+local function shrinkCharacter(character, scale)
+    if not character or not character:IsA("Model") then return end
+
+    -- Получаем основной элемент модели
+    local primaryPart = character.PrimaryPart
+    if not primaryPart then return end
+
+    -- Применяем масштабирование ко всем частям модели
+    for _, part in pairs(character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.Size = part.Size * scale
+            part.Position = part.Position * scale
+        end
+    end
+
+    -- Перемещение персонажа на землю, если необходимо
+    character:SetPrimaryPartCFrame(character:GetPrimaryPartCFrame() * CFrame.new(0, -primaryPart.Size.Y * (1 - scale), 0))
+end
+
+-- Привязка функции уменьшения к кнопке
+ShrinkButton.MouseButton1Click:Connect(function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local scale = 0.5 -- Масштаб (0.5 уменьшит персонажа в 2 раза)
+
+    shrinkCharacter(character, scale)
+end)
 
 -- Настройка ScreenGui
 ScreenGui.Parent = game.CoreGui
