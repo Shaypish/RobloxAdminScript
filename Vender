@@ -1,0 +1,200 @@
+-- GUI элементы
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local CloseButton = Instance.new("TextButton")
+local Sidebar = Instance.new("Frame")
+local HomeButton = Instance.new("TextButton")
+local SettingsButton = Instance.new("TextButton")
+local HomeFrame = Instance.new("Frame")
+local WelcomeLabel = Instance.new("TextLabel")
+local DiscordInfoLabel = Instance.new("TextLabel")
+local DiscordLinkButton = Instance.new("TextButton")
+local SettingsFrame = Instance.new("Frame")
+local SpeedLabel = Instance.new("TextLabel")
+local SpeedSlider = Instance.new("TextBox")
+local JumpLabel = Instance.new("TextLabel")
+local JumpSlider = Instance.new("TextBox")
+local FlyLabel = Instance.new("TextLabel")
+local FlyButton = Instance.new("TextButton")
+local OpenButton = Instance.new("ImageButton")
+
+-- Настройка ScreenGui
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Настройка MainFrame
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MainFrame.Size = UDim2.new(0, 600, 0, 400) -- Широкий прямоугольник
+MainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
+MainFrame.Visible = false
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+-- Настройка CloseButton
+CloseButton.Name = "CloseButton"
+CloseButton.Parent = MainFrame
+CloseButton.Text = "X"
+CloseButton.Size = UDim2.new(0, 30, 0, 30)
+CloseButton.Position = UDim2.new(1, -30, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.TextScaled = true
+CloseButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = false
+    OpenButton.Visible = true
+end)
+
+-- Настройка Sidebar
+Sidebar.Name = "Sidebar"
+Sidebar.Parent = MainFrame
+Sidebar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Sidebar.Size = UDim2.new(0, 100, 1, 0)
+Sidebar.Position = UDim2.new(0, 0, 0, 0) 
+
+-- Настройка HomeButton
+HomeButton.Name = "HomeButton"
+HomeButton.Parent = Sidebar
+HomeButton.Text = "Home"
+HomeButton.Size = UDim2.new(1, 0, 0, 50)
+HomeButton.Position = UDim2.new(0, 0, 0, 0)
+HomeButton.TextScaled = true
+HomeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+HomeButton.MouseButton1Click:Connect(function()
+    switchToSection("Home")
+end)
+
+-- Настройка SettingsButton
+SettingsButton.Name = "SettingsButton"
+SettingsButton.Parent = Sidebar
+SettingsButton.Text = "Settings"
+SettingsButton.Size = UDim2.new(1, 0, 0, 50)
+SettingsButton.Position = UDim2.new(0, 0, 0, 50)
+SettingsButton.TextScaled = true
+SettingsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SettingsButton.MouseButton1Click:Connect(function()
+    switchToSection("Settings")
+end)
+
+-- Настройка HomeFrame
+HomeFrame.Name = "HomeFrame"
+HomeFrame.Parent = MainFrame
+HomeFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+HomeFrame.Size = UDim2.new(1, -100, 1, 0)
+HomeFrame.Position = UDim2.new(0, 100, 0, 0)
+
+-- Настройка WelcomeLabel
+WelcomeLabel.Parent = HomeFrame
+WelcomeLabel.Text = "Welcome to the Game Mode!"
+WelcomeLabel.Size = UDim2.new(1, 0, 0, 100)
+WelcomeLabel.Position = UDim2.new(0, 0, 0, 0)
+WelcomeLabel.TextScaled = true
+WelcomeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Настройка DiscordInfoLabel
+DiscordInfoLabel.Parent = HomeFrame
+DiscordInfoLabel.Text = "Join our Discord for more info:"
+DiscordInfoLabel.Size = UDim2.new(1, 0, 0, 100)
+DiscordInfoLabel.Position = UDim2.new(0, 0, 0, 100)
+DiscordInfoLabel.TextScaled = true
+DiscordInfoLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+
+-- Настройка DiscordLinkButton
+DiscordLinkButton.Parent = HomeFrame
+DiscordLinkButton.Text = "Discord Invite Link"
+DiscordLinkButton.Size = UDim2.new(1, 0, 0, 100)
+DiscordLinkButton.Position = UDim2.new(0, 0, 0, 200)
+DiscordLinkButton.TextScaled = true
+DiscordLinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DiscordLinkButton.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/YOUR_INVITE_LINK")
+end)
+
+-- Настройка SettingsFrame
+SettingsFrame.Name = "SettingsFrame"
+SettingsFrame.Parent = MainFrame
+SettingsFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+SettingsFrame.Size = UDim2.new(1, -100, 1, 0)
+SettingsFrame.Position = UDim2.new(0, 100, 0, 0)
+SettingsFrame.Visible = false
+
+-- Настройка SpeedLabel
+SpeedLabel.Parent = SettingsFrame
+SpeedLabel.Text = "Speed"
+SpeedLabel.Size = UDim2.new(0, 100, 0, 50)
+SpeedLabel.Position = UDim2.new(0, 0, 0, 0)
+SpeedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Настройка SpeedSlider
+SpeedSlider.Parent = SettingsFrame
+SpeedSlider.Text = "16"
+SpeedSlider.Size = UDim2.new(0, 100, 0, 50)
+SpeedSlider.Position = UDim2.new(0, 100, 0, 0)
+SpeedSlider.FocusLost:Connect(function()
+    local speed = tonumber(SpeedSlider.Text)
+    if speed then
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+    end
+end)
+
+-- Настройка JumpLabel
+JumpLabel.Parent = SettingsFrame
+JumpLabel.Text = "Jump Power"
+JumpLabel.Size = UDim2.new(0, 100, 0, 50)
+JumpLabel.Position = UDim2.new(0, 0, 0, 50)
+JumpLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Настройка JumpSlider
+JumpSlider.Parent = SettingsFrame
+JumpSlider.Text = "50"
+JumpSlider.Size = UDim2.new(0, 100, 0, 50)
+JumpSlider.Position = UDim2.new(0, 100, 0, 50)
+JumpSlider.FocusLost:Connect(function()
+    local jumpPower = tonumber(JumpSlider.Text)
+    if jumpPower then
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = jumpPower
+    end
+end)
+
+-- Настройка FlyLabel
+FlyLabel.Parent = SettingsFrame
+FlyLabel.Text = "Fly"
+FlyLabel.Size = UDim2.new(0, 100, 0, 50)
+FlyLabel.Position = UDim2.new(0, 0, 0, 100)
+FlyLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Настройка FlyButton
+FlyButton.Parent = SettingsFrame
+FlyButton.Text = "Toggle Fly"
+FlyButton.Size = UDim2.new(0, 100, 0, 50)
+FlyButton.Position = UDim2.new(0, 100, 0, 100)
+FlyButton.MouseButton1Click:Connect(function()
+    loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\
+end)
+
+-- Настройка OpenButton
+OpenButton.Name = "OpenButton"
+OpenButton.Parent = ScreenGui
+OpenButton.Image = "rbxassetid://6031068430" -- Пиктограмма меню
+OpenButton.Size = UDim2.new(0, 50, 0, 50)
+OpenButton.Position = UDim2.new(0, 0, 0.5, -25)
+OpenButton.BackgroundTransparency = 1
+OpenButton.Visible = true
+OpenButton.MouseButton1Click
+(function()
+MainFrame.Visible = true
+OpenButton.Visible = false
+end)
+
+-- Функция для переключения между вкладками
+function switchToSection(section)
+HomeFrame.Visible = (section == "Home")
+SettingsFrame.Visible = (section == "Settings")
+end
+
+-- Убедитесь, что все кнопки, фреймы и надписи видимы
+CloseButton.Visible = true
+HomeButton.Visible = true
+SettingsButton.Visible = true
+HomeFrame.Visible = true
+SettingsFrame.Visible = false
