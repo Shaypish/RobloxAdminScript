@@ -1,4 +1,3 @@
--- GUI элементы
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local CloseButton = Instance.new("TextButton")
@@ -9,7 +8,7 @@ local HomeFrame = Instance.new("Frame")
 local WelcomeLabel = Instance.new("TextLabel")
 local DiscordInfoLabel = Instance.new("TextLabel")
 local DiscordLinkButton = Instance.new("TextButton")
-local SettingsFrame = Instance.new("Frame")
+local SettingsFrame = Instance.new("ScrollingFrame") -- Используем ScrollingFrame для прокрутки
 local SpeedLabel = Instance.new("TextLabel")
 local SpeedSlider = Instance.new("TextBox")
 local JumpLabel = Instance.new("TextLabel")
@@ -17,21 +16,27 @@ local JumpSlider = Instance.new("TextBox")
 local FlyLabel = Instance.new("TextLabel")
 local FlyButton = Instance.new("TextButton")
 local OpenButton = Instance.new("ImageButton")
+local SpinLabel = Instance.new("TextLabel")
+local SpinSlider = Instance.new("TextBox")
+local SpinOffButton = Instance.new("TextButton")
+local SkinLabel = Instance.new("TextLabel")
+local SkinTextBox = Instance.new("TextBox")
+local ChangeSkinButton = Instance.new("TextButton")
 
 -- Настройка ScreenGui
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Parent = game.CoreGui
 
 -- Настройка MainFrame
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-MainFrame.Size = UDim2.new(0, 600, 0, 400) -- Широкий прямоугольник
+MainFrame.Size = UDim2.new(0, 600, 0, 400)
 MainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
 MainFrame.Visible = false
 MainFrame.Active = true
 MainFrame.Draggable = true
 
--- Настройка CloseButton
+-- Настройка кнопки закрытия
 CloseButton.Name = "CloseButton"
 CloseButton.Parent = MainFrame
 CloseButton.Text = "X"
@@ -42,15 +47,14 @@ CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseButton.TextScaled = true
 CloseButton.MouseButton1Click:Connect(function()
     MainFrame.Visible = false
-    OpenButton.Visible = true
 end)
 
--- Настройка Sidebar
+-- Настройка боковой панели
 Sidebar.Name = "Sidebar"
 Sidebar.Parent = MainFrame
 Sidebar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Sidebar.Size = UDim2.new(0, 100, 1, 0)
-Sidebar.Position = UDim2.new(0, 0, 0, 0) 
+Sidebar.Position = UDim2.new(0, 0, 0, 0)
 
 -- Настройка HomeButton
 HomeButton.Name = "HomeButton"
@@ -117,6 +121,8 @@ SettingsFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 SettingsFrame.Size = UDim2.new(1, -100, 1, 0)
 SettingsFrame.Position = UDim2.new(0, 100, 0, 0)
 SettingsFrame.Visible = false
+SettingsFrame.CanvasSize = UDim2.new(0, 0, 1, 600) -- Размер прокрутки
+SettingsFrame.ScrollBarThickness = 10
 
 -- Настройка SpeedLabel
 SpeedLabel.Parent = SettingsFrame
@@ -158,43 +164,129 @@ end)
 
 -- Настройка FlyLabel
 FlyLabel.Parent = SettingsFrame
-FlyLabel.Text = "Fly"
+FlyLabel.Text = "Fly Mode"
 FlyLabel.Size = UDim2.new(0, 100, 0, 50)
-FlyLabel.Position = UDim2.new(0, 0, 0, 100)
+FlyLabel.Position = UDim2.new(0, 0, 0, 120)
 FlyLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 -- Настройка FlyButton
 FlyButton.Parent = SettingsFrame
 FlyButton.Text = "Toggle Fly"
 FlyButton.Size = UDim2.new(0, 100, 0, 50)
-FlyButton.Position = UDim2.new(0, 100, 0, 100)
+FlyButton.Position = UDim2.new(0, 100, 0, 120)
 FlyButton.MouseButton1Click:Connect(function()
-    loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\
+    loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
+end)
+
+-- Настройка SpinLabel
+SpinLabel.Parent = SettingsFrame
+SpinLabel.Text = "Spin Speed"
+SpinLabel.Size = UDim2.new(0.5, 0, 0, 50)
+SpinLabel.Position = UDim2.new(0, 0, 0, 180)
+SpinLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Настройка SpinSlider
+SpinSlider.Parent = SettingsFrame
+SpinSlider.Text = "0"
+SpinSlider.Size = UDim2.new(0.5, 0, 0, 50)
+SpinSlider.Position = UDim2.new(0.5, 0, 0, 180)
+SpinSlider.FocusLost:Connect(function()
+    local spinSpeed = tonumber(SpinSlider.Text)
+    if spinSpeed then
+        setSpinSpeed(spinSpeed)
+    else
+        SpinSlider.Text = "0"
+        setSpinSpeed(0)
+    end
+end)
+
+-- Настройка SpinOffButton
+SpinOffButton.Parent = SettingsFrame
+SpinOffButton.Text = "Spin Off"
+SpinOffButton.Size = UDim2.new(1, 0, 0, 50)
+SpinOffButton.Position = UDim2.new(0, 0, 0, 230)
+SpinOffButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+SpinOffButton.MouseButton1Click:Connect(function()
+    setSpinSpeed(0)
+end)
+
+-- Настройка SkinLabel
+SkinLabel.Parent = SettingsFrame
+SkinLabel.Text = "Enter Skin ID"
+SkinLabel.Size = UDim2.new(1, 0, 0, 50)
+SkinLabel.Position = UDim2.new(0, 0, 0, 280)
+SkinLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Настройка SkinTextBox
+SkinTextBox.Parent = SettingsFrame
+SkinTextBox.Text = ""
+SkinTextBox.Size = UDim2.new(1, 0, 0, 50)
+SkinTextBox.Position = UDim2.new(0, 0, 0, 330)
+
+-- Настройка ChangeSkinButton
+ChangeSkinButton.Parent = SettingsFrame
+ChangeSkinButton.Text = "Change Skin"
+ChangeSkinButton.Size = UDim2.new(1, 0, 0, 50)
+ChangeSkinButton.Position = UDim2.new(0, 0, 0, 380)
+ChangeSkinButton.TextColor3 = Color3.fromRGB(0, 255, 0)
+ChangeSkinButton.MouseButton1Click:Connect(function()
+    local skinId = SkinTextBox.Text
+    if skinId and skinId ~= "" then
+        game.Players.LocalPlayer.CharacterAppearanceId = "http://www.roblox.com/asset/?id=" .. skinId
+    end
 end)
 
 -- Настройка OpenButton
 OpenButton.Name = "OpenButton"
 OpenButton.Parent = ScreenGui
-OpenButton.Image = "rbxassetid://6031068430" -- Пиктограмма меню
 OpenButton.Size = UDim2.new(0, 50, 0, 50)
 OpenButton.Position = UDim2.new(0, 0, 0.5, -25)
-OpenButton.BackgroundTransparency = 1
-OpenButton.Visible = true
-OpenButton.MouseButton1Click
-(function()
-MainFrame.Visible = true
-OpenButton.Visible = false
+OpenButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+OpenButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
 end)
 
--- Функция для переключения между вкладками
-function switchToSection(section)
-HomeFrame.Visible = (section == "Home")
-SettingsFrame.Visible = (section == "Settings")
+-- Логика вращения персонажа
+local spinning = false
+local spinConnection
+
+function setSpinSpeed(speed)
+    if speed > 0 then
+        if not spinning then
+            spinning = true
+            spinConnection = game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
+                game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(
+                    game.Players.LocalPlayer.Character.PrimaryPart.CFrame * CFrame.Angles(0, math.rad(speed) * deltaTime, 0)
+                )
+            end)
+        else
+            spinConnection:Disconnect()
+            spinConnection = game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
+                game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(
+                    game.Players.LocalPlayer.Character.PrimaryPart.CFrame * CFrame.Angles(0, math.rad(speed) * deltaTime, 0)
+                )
+            end)
+        end
+    else
+        if spinning then
+            spinning = false
+            spinConnection:Disconnect()
+        end
+    end
 end
 
--- Убедитесь, что все кнопки, фреймы и надписи видимы
-CloseButton.Visible = true
-HomeButton.Visible = true
-SettingsButton.Visible = true
+-- Функция переключения секций
+function switchToSection(section)
+    if section == "Home" then
+        HomeFrame.Visible = true
+        SettingsFrame.Visible = false
+    elseif section == "Settings" then
+        HomeFrame.Visible = false
+        SettingsFrame.Visible = true
+    end
+end
+
+-- Инициализация начального состояния
 HomeFrame.Visible = true
 SettingsFrame.Visible = false
+MainFrame.Visible = false
